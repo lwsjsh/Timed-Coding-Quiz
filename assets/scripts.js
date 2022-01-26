@@ -11,7 +11,6 @@ var submitScoreButtonEl = document.getElementById("submit");
 var correctAnswersEl = document.getElementById("correct-answers");
 var incorrectAnswersEl = document.getElementById("incorrect-answers");
 
-// JS Variables
 var quizQuestion1 = {
   question: "Commonly used data types DO NOT include",
   answers: ["strings", "booleans", "alerts", "numbers"],
@@ -91,7 +90,7 @@ function startClock() {
     timerEl.textContent = secondsLeft;
     secondsLeft--;
 
-    // Stop the clock if the quiz is over
+    
     if (endOfQuiz) {
       clearInterval(timerInterval);
     }
@@ -99,27 +98,26 @@ function startClock() {
 }
 
 function showQuizQuestion(index) {
-  // Clear the box
+  
   quizContentEl.innerHTML = "";
 
-  //Create h1 for the question
+  
   var h1El = document.createElement("h1");
   h1El.innerHTML = questionsArray[index].question;
   quizContentEl.append(h1El);
 
-  //Create ul
+  
   var ulEl = document.createElement("ul");
   ulEl.style = "list-style-type:none";
   quizContentEl.append(ulEl);
 
-  //Create li for each question answer
   for (var i = 0; i < questionsArray[index].answers.length; i++) {
-    //create li
+    
     var liEl = document.createElement("li");
     liEl.classList.add("p-1");
     ulEl.append(liEl);
 
-    //Create button for each li
+    
     var buttonEl = document.createElement("button");
     var questionNumber = i + 1;
     buttonEl.classList.add("btn");
@@ -131,38 +129,38 @@ function showQuizQuestion(index) {
 }
 
 function checkAnswer(answer) {
-  // Check the submitted answer against the question objects correctAnswer value
+  
   if (answer === questionsArray[questionIndex].correctAnswer) {
-    // Run display function to alert user of answer result
+    
     var result = true;
-    // Add to the correct answer count
+    
     numberCorrect++;
     displayResult(result);
   } else {
-    // Run display function to alert user of answer result
+    
     var result = false;
-    // Add to the incorrect answer count
+    
     numberIncorrect++;
     displayResult(result);
-    //subtract 10 seconds from time
+    
     secondsLeft = secondsLeft - 10;
   }
 }
 
 function displayResult(result) {
-  // Unhide the section
+   
   answerResultSectionEl.hidden = false;
 
   if (result) {
-    // Display text of previous answer result
-    answerResultEl.textContent = "The previous answer was correct!";
+    
+    answerResultEl.textContent = "correct";
   } else {
-    // Display text of previous answer result
+    
     answerResultEl.textContent =
-      "The previous answer was incorrect!  Subtracted 10 seconds from your score!!";
+      "incorrect";
   }
 
-  //Clear the result after 1 second
+  
   var timerInterval = setInterval(function () {
     if (resultTimer === 0) {
       clearInterval(timerInterval);
@@ -178,19 +176,19 @@ function displayResult(result) {
 
 function processQuizAnswer(event) {
   if (event.target.matches("button")) {
-    //Remove number from answer selection
+   
     var answer = event.target.textContent.substring(3);
 
-    // Condition to check if this is the last question
+    
     if (questionIndex === questionsArray.length - 1) {
       checkAnswer(answer);
       endOfQuiz = true;
-      // go to the final score tally
+     
       endQuiz();
     } else {
-      //process the answer
+     
       checkAnswer(answer);
-      //display the next question
+     
       questionIndex++;
       showQuizQuestion(questionIndex);
     }
@@ -198,9 +196,8 @@ function processQuizAnswer(event) {
 }
 
 function endQuiz() {
-  // hide the last displayed quiz question
+  
   quizContentEl.hidden = "true";
-  // Show the quiz results content and user initials submission
   submitScoreEl.removeAttribute("hidden");
   finalScoreEl.textContent = secondsLeft;
   correctAnswersEl.textContent = numberCorrect;
@@ -217,11 +214,11 @@ function saveScore(event) {
   scoreAndInitialsObj.score = finalScore;
 
   if (localStorage.getItem("saved-scores") === null) {
-    // See if there are previous scores, if not store the score
+    
     scoresArrayObj.push(scoreAndInitialsObj);
     localStorage.setItem("saved-scores", JSON.stringify(scoresArrayObj));
   } else {
-    // Get previous scores and store them in scoresArray, add the new score, then save in localStorage
+    
     scoresArrayObj = JSON.parse(localStorage.getItem("saved-scores"));
     scoresArrayObj.push(scoreAndInitialsObj);
     localStorage.setItem("saved-scores", JSON.stringify(scoresArrayObj));
